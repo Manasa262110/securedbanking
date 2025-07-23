@@ -1,0 +1,49 @@
+{% extends 'admin/puf.html' %}
+
+{% load static %}
+
+{% block title %}
+	Verification
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Verify Transaction</h2>
+	<form class="form-group verify-box" method="post">
+		{% csrf_token %}
+		<table class="table table-borderless">
+			<tr>
+				<td>
+					<label for="binary">Private Key</label>
+				</td>
+				<td>
+					<input type="text" name="pvtkey" placeholder="Private Key" required="required" class="input-field">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="binary">Binary Key</label>
+				</td>
+				<td>
+					<input type="text" name="binary" placeholder="Binary Key" required="required" class="input-field">
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<div class="form-btn">
+						<input type="submit" class="btn btn-primary" value="Verify Transaction">
+						<input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel">
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

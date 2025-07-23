@@ -1,0 +1,50 @@
+{% extends 'admin/adminhome.html' %}
+
+{% load static %}
+
+{% block title %}
+	Identity Element
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Coin Element</h2>
+	<form class="form-group" method="post">
+		{% csrf_token %}
+		<table data-toggle="table" data-pagination="true" class="table table-bordered mydatatable">
+			<thead class="thead-dark">
+				<tr>
+					<th>Username</th>
+					<th>Name</th>
+					<th>Card No.</th>
+					<th>Bank</th>
+					<th>Binary Key</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+			{% for cards in cards %}
+				<tr>
+					<td>{{ cards.username }}</td>
+					<td>{{ cards.name }}</td>
+					<td>{{ cards.card }}</td>
+					<td>{{ cards.bank }}</td>
+					<td>
+						{% if cards.binary == None %}
+						<a href="../binarykey/{{cards.id}}">Generate key</a>
+						{% else %}
+						<input type="text" class="keyfield" value="{{ cards.binary }}" id="binary" readonly>
+						<button class="btn copy-btn" onclick="copyBinKey()"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

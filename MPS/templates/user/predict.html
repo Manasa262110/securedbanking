@@ -1,0 +1,127 @@
+{% extends 'index.html' %}
+
+{% load static %}
+{% block content %}
+
+		<form class="form-group signup" method="post" action="predict">
+			{% csrf_token %}
+
+			<table class="table table-borderless">
+				<tr>
+					<td>
+						<label for="v1">V1<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="text" name="v1" placeholder="{{v1}}" required="required" class="form-control" maxlength="100" autocomplete="off" autofocus>
+							<span class="input-group-addon"><span class="fas fa-user"></span></span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="v2">V2<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="email" name="v2" placeholder="{{v2}}" required="required" class="emailinput form-control" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-envelope"></span></span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="v3">V3<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v3" placeholder="{{v3}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<tr>
+					<td>
+						<label for="v4">V4<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v4" placeholder="{{v4}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="v5">V5<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v5" placeholder="{{v5}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<label for="v6">V6<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v6" placeholder="{{v6}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<label for="v7">V7<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v7" placeholder="{{v7}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<label for="v8">V8<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="v8" placeholder="{{v8}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<label for="amt">Amount<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="amt" placeholder="{{amt}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+				<td>
+						<label for="amt">Credit card Fraud Detection<span class="asteriskField">*</span></label>
+					</td>
+					<td>
+						<div class="input-group">
+							<input type="tel" name="amt" placeholder="{{predict}}" required="required" class="form-control" maxlength="10" autocomplete="off">
+							<span class="input-group-addon"><span class="fas fa-mobile"></span></span>
+						</div>
+					</td>
+				</tr>
+			</table>
+			
+
+		</form>
+	</div>
+</div>
+
+{% endblock %}

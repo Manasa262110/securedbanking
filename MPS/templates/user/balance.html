@@ -1,0 +1,24 @@
+{% extends 'user/userhome.html' %}
+{% load static %}
+
+{% block title %}Account Balance{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_superuser and not user.is_staff %}
+
+<div class="container mt-5">
+    <h2 class="text-center">Available Balance</h2>
+    <div class="card shadow mt-4" style="max-width: 500px; margin: auto;">
+        <div class="card-body text-center">
+            <h3 class="text-success">₹ {{ balance }}</h3>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'transactions' %}" class="btn btn-outline-primary">View Transactions</a>
+    </div>
+</div>
+
+{% else %}
+    <meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

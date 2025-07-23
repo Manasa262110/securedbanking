@@ -1,0 +1,44 @@
+{% extends 'admin/puf.html' %}
+
+{% load static %}
+
+{% block title %}
+	User Card Reader
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">User Card Reader</h2>
+	<form class="form-group" method="post">
+		{% csrf_token %}
+		<table data-toggle="table" data-pagination="true" class="table table-bordered table-striped mydatatable">
+			<thead class="thead-dark">
+				<tr>
+					<th>Username</th>
+					<th>Name</th>
+					<th>Bank</th>
+					<th>Card No.</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				{% for cards in cards %}
+					<tr>
+						<td>{{ cards.username }}</td>
+						<td>{{ cards.name }}</td>
+						<td>{{ cards.bank }}</td>
+						<td>{{ cards.card }}</td>
+						<td><a href="../delete/{{ cards.id }}">Delete</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

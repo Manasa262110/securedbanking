@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+	OTP
+{% endblock %}
+
+{% block content %}
+<div class="otp-box">
+	
+	<div class="otp-header">
+		<h3 class="text-center">One Time Password</h3>
+	</div>
+	<hr>
+	<form class="form-group otp" method="POST">
+		{% csrf_token %}
+		<div class="input-group mx-auto">
+			<label for="otp" id="otp-label">Enter your OTP</label>
+			<input type="text" name="otp" class="form-control" id="otp-field" autocomplete="off" autofocus>
+		</div>
+		<input type="submit" class="btn submit-btn" value="Verify">
+	</form>
+</div>
+</div>
+{% endblock %}

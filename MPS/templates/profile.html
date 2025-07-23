@@ -1,0 +1,245 @@
+
+{% load static %}
+{% static "images" as imgurl %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>
+		{% block title %}
+			Profile
+		{% endblock %}
+	</title>
+			<style>
+		body{
+			background: url("{% static 'img/6.jpg' %}");
+        background-attachment: fixed;
+        background-size: 100% 100%;
+        font-family: Calibri, sans-serif;
+
+    }
+</style>
+	<link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Aclonica' rel='stylesheet'>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/all.css' %}" >
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+	<div class="container">
+		<nav class="logobar bg-light">
+			<h1 class="text-center">Micro Payments System</h1>
+		</nav>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+			<a class="navbar-brand" href="../">MPS</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="../"><span class="fas fa-chevron-left">Back to <i class="fa fa-home"></i></span></a>
+					</li>
+					<!--<li class="nav-item">
+						<a class="nav-link" href="../contact">Contact Us</a>
+					</li>-->
+					<li class="nav-item">
+						<a class="nav-link" href="../about">About</a>
+					</li>
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="../logout">Logout</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		<div class="main bg-light">
+		{% if messages %}
+		<ul class="messages text-center">
+			{% for message in messages %}
+				{% if message.tags == 'info' %}
+				<div class="alert alert-info" role="alert">
+				{% elif message.tags == 'success' %}
+				<div class="alert alert-success" role="alert">
+				{% elif message.tags == 'warning' %}
+				<div class="alert alert-warning" role="alert">
+				{% elif message.tags == 'error' %}
+				<div class="alert alert-danger" role="alert">
+				{% endif %}
+					<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				</div>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% block content %}
+		{% if user.is_authenticated %}
+
+			<h2 class="page-header">Update User Profile</h2>
+			<form class="form-group form-alter" method="post">
+				{% csrf_token %}
+				<img src="{{ userdata.pic }}" class="d-block mx-auto pfp">
+				<table class="table table-borderless">
+					<tr>
+						<td>
+							<label for="pic">Profile Image</label>
+						</td>
+						<td>
+							<input type="file" name="pic" value="{{userdata.pic}}" placeholder="{{userdata.pic}}" class="form-control" autocomplete="off">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="name">Full Name</label>
+						</td>
+						<td name="name">
+							<div class="input-group">
+								<input type="text" name="first_name" value="{{userdata.first_name}}" placeholder="First Name" required="required" class="form-control" maxlength="150" autocomplete="off">
+								<input type="text" name="last_name" value="{{userdata.last_name}}" placeholder="Last Name" required="required" class="form-control" maxlength="150" autocomplete="off">	
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="username">Username</label>
+						</td>
+						<td>
+							<input type="text" name="username" value="{{userdata.username}}" placeholder="Username" required="required" class="form-control" maxlength="100" autocomplete="off">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="email">Email</label>
+						</td>
+						<td>
+							<input type="email" name="email" value="{{userdata.email}}" placeholder="Email" required="required" class="emailinput form-control" autocomplete="off">
+						</td>
+					</tr>
+					{% if user.is_staff and not user.is_superuser %}
+					<tr>
+						<td>
+							<label for="bank">Bank</label>
+						</td>
+						<td>
+							<select id = "bank" name="bank" required="required" class="custom-select dropdown-primary">
+								<option value = "{{ userdata.bank }}" selected hidden>{{ userdata.bank }}</option>
+			 					{% for bank in banks %}
+			 					<option value = "{{bank.name}}">{{bank.name}}</option>
+			 					{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="branch">Branch</label>
+						</td>
+						<td>
+							<input type="text" name="branch" required="required" placeholder="Branch" value="{{ user.branch }}" class="form-control">
+						</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td>
+							<label for="card">Card</label>
+						</td>
+						<td>
+							<ul class="form-control">
+								{% for cards in cards %}
+								{% if user.username == cards.username %}
+								<div class="input-group">
+									<li style="list-style-type: none;">{{ cards.card }}</li>
+									<div class="ml-auto">
+										<a href="../updatecard/{{ cards.id }}">Update </a>|<a href="../delete/{{ cards.id }}"> Delete</a>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</ul>
+							<a name="card" id="card-add" required="required" class="form-control btn btn-primary" href="../addcard">Add Card</a>
+						</td>
+					</tr>
+					{% endif %}
+					<tr>
+						<td>
+							<label for="balance">Account Balance</label>
+						</td>
+						<td>
+							<input type="text" name="balance" value="{{userdata.balance}}" id="bal" class="form-control" disabled>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="password">Password</label>
+						</td>
+						<td>
+							<a name="password" id="password-change" required="required" class="form-control btn btn-primary" href="../changepassword">Change Password</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="dob">Date of Birth<span class="asteriskField">*</span></label>
+						</td>
+						<td>
+							<div class="input-group">
+								<input type="text" name="dob" required="required" value="{{ userdata.dob }}" class="form-control" maxlength="20" autocomplete="off">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="gender">Gender</label>
+						</td>
+						<td>
+							<select id = "myList" name="gender" required="required" class="custom-select dropdown-primary">
+								<option value = "{{ userdata.gender }}" selected hidden>
+									{% if userdata.gender == None %}
+									Select Gender
+									{% else %}
+									{{ userdata.gender }}
+									{% endif %}
+								</option>
+								<option value = "Male">Male<i class="fa fa-male"></i></option>
+								<option value = "Female">Female<i class="fa fa-female"></i></option>
+								<option value = "Other">Other<i class="fa fa-transgender-alt"></i></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="mobile">Mobile No.</label>
+						</td>
+						<td>
+							<input type="tel" name="mobile" required="required" placeholder="Mobile No." value="{{userdata.mobile}}" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="form-btn mx-auto">
+							<input type="submit" class="btn btn-primary" value="Update">
+							<input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel">
+						</td>
+					</tr>
+
+				</table>
+			</form>
+
+		{% else %}
+			<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+		{% endif %}
+		{% endblock %}
+		</div>
+
+	</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="{% static 'js/home.js' %}"></script>
+</body>
+</html>

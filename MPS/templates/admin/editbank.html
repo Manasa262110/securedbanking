@@ -1,0 +1,56 @@
+{% extends 'admin/adminhome.html' %}
+
+{% load static %}
+
+{% block title %}
+	Banks List
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Edit {{ banks.name }}</h2>
+	<form class="form-group form-alter" method="post">
+		{% csrf_token %}
+		<table class="table table-borderless">
+			<tr>
+				<td><label for="name">Bank Name<span class="asteriskField">*</span></label></td>
+				<td><input type="text" name="name" placeholder="Bank Name" value="{{ banks.name }}" focus required="required" class="form-control" maxlength="100" autocomplete="off"></td>
+			</tr>
+			<tr>
+				<td><label for="btype">Type<span class="asteriskField">*</span></label></td>
+				<td>
+					<select id = "banktype" name="btype" required="required" class="custom-select dropdown-primary">
+						<option value = "none" selected disabled hidden>{{ banks.btype }}</option>
+	 					<option value = "Public">Public</option>
+	 					<option value = "Private">Private</option>
+	 					<option value = "Payments Bank">Payments Bank</option>
+	 					<option value = "Foreign Bank">Foreign Bank</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="hq">Headquarter<span class="asteriskField">*</span></label></td>
+				<td><input type="text" name="hq" placeholder="City, State/Country" value="{{ banks.hq }}" required="required" class="form-control" maxlength="100" autocomplete="off"></td>
+			</tr>
+			<tr>
+				<td><label for="estd">Established Year<span class="asteriskField">*</span></label></td>
+				<td><input type="number" name="estd" placeholder="Established Year" value="{{ banks.estd }}" required="required" class="form-control" min="1700" max="2500" maxlength="100" autocomplete="off"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<div class="form-btn mx-auto">
+						<input type="submit" class="btn btn-primary" value="Save Changes">
+						<input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel">
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

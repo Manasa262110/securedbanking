@@ -1,0 +1,46 @@
+{% extends 'admin/adminhome.html' %}
+
+{% load static %}
+
+{% block title %}
+	Banks List
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Bank List</h2>
+	<form class="form-group" method="post">
+		{% csrf_token %}
+		<a class="btn btn-primary" href="../addbank">Add Bank</a>
+		<table data-toggle="table" data-pagination="true" class="table table-bordered table-striped mydatatable">
+			<thead class="thead-dark">
+				<tr>
+					<th>Sl No.</th>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Established</th>
+					<th>Headquarter</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+			{% for bank in banks %}
+				<tr>
+					<td>{{ bank.id }}</td>
+					<td>{{ bank.name }}</td>
+					<td>{{ bank.btype }}</td>
+					<td>{{ bank.estd }}</td>
+					<td>{{ bank.hq }}</td>
+					<td><a href="../editbank/{{ bank.id }}">Edit</a> | <a href="../delete/{{ bank.id }}">Delete</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

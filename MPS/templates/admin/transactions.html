@@ -1,0 +1,67 @@
+{% extends 'admin/puf.html' %}
+
+{% load static %}
+
+{% block title %}
+	Banks List
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Transaction Details</h2>
+	<form class="form-group" method="post">
+		{% csrf_token %}
+		<table data-toggle="table" data-pagination="true" class="table table-bordered table-striped mydatatable">
+			<thead class="thead-dark">
+				<tr>
+					<th>Account</th>
+					<th>Card No.</th>
+					<th>Bank</th>
+					<th>Transaction</th>
+					<th>Amount</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+			{% for txns in txns %}
+				<tr>
+					<td>{{ txns.from_account }}</td>
+					<td>{{ txns.card }}</td>
+					<td>{{ txns.bank }}</td>
+					<td>
+						{% if txns.txntype == 'Deposit' %}
+						<div style="color: green;">{{ txns.txntype }}</div>
+						{% elif txns.txntype == 'Withdraw' %}
+						<div style="color: red;">{{ txns.txntype }}</div>
+						{% elif txns.txntype == 'Transfer' %}
+						<div style="color: purple;">{{ txns.txntype }} <i class="fa fa-angle-right"></i> {{ txns.to_account }}</div>
+						{% endif %}
+					</td>
+					<td>
+						{% if txns.txntype == 'Deposit' %}
+						<div style="color: green;">{{ txns.amount }}</div>
+						{% elif txns.txntype == 'Withdraw' %}
+						<div style="color: red;">{{ txns.amount }}</div>
+						{% else %}
+						<div style="color: purple;">{{ txns.amount }}</div>
+						{% endif %}
+					</td>
+					<td>
+						{% if txns.txnstatus == True %}
+						Complete
+						{% else %}
+						<a href="../verification/{{ txns.id }}">Verify</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}

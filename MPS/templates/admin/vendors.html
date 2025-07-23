@@ -1,0 +1,54 @@
+{% extends 'admin/puf.html' %}
+
+{% load static %}
+
+{% block title %}
+	Vendors List
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated%}
+
+
+	<a href="javascript:history.back()"><span class="go-back fas fa-chevron-left">Go Back</span></a>
+	<h2 class="page-header text-justified">Vendors List</h2>
+	<form class="form-group" method="post">
+		{% csrf_token %}
+		<table data-toggle="table" data-pagination="true" class="table table-bordered table-striped mydatatable">
+			<thead class="thead-dark">
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Mobile No.</th>
+					<th>Gender</th>
+					<th>DoB</th>
+					<th>Bank</th>
+					<th>Branch</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				{% for vendors in vendors %}
+					{% if vendors.is_staff and not vendors.is_superuser %}
+					<tr>
+						<td>{{ vendors.pic }}</td>
+						<td>{{ vendors.username }}</td>
+						<td>{{ vendors.email }}</td>
+						<td>{{ vendors.mobile }}</td>
+						<td>{{ vendors.gender }}</td>
+						<td>{{ vendors.dob }}</td>
+						<td>{{ vendors.bank }}</td>
+						<td>{{ vendors.branch }}</td>
+						<td><a href="../delete/{{ vendors.id }}">Delete</a></td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+	</form>
+
+{% else %}
+	<meta http-equiv="refresh" content="0; url={% url 'home' %}">
+{% endif %}
+{% endblock %}
